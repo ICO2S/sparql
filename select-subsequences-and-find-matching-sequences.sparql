@@ -15,6 +15,9 @@ SELECT ?annoname ?cdname ?cd1 ?sa ?cd2 WHERE {
     ?cd1 sbol:sequence ?seq .
     ?seq sbol:elements ?na .
 
+    bind (strlen(?na) as ?seqlen)
+    filter(xsd:integer(?end) <= ?seqlen)
+
     BIND (xsd:integer(?end) - xsd:integer(?start) + 1 AS ?len)
     BIND (SUBSTR(?na, xsd:integer(?start), ?len) AS ?nasub)
 

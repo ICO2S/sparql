@@ -1,0 +1,36 @@
+
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?annoname ?cdname ?cd1 ?sa ?cd2 WHERE {
+
+
+    ?cd1 a sbol:ComponentDefinition .
+    ?cd1 sbol:sequenceAnnotation ?sa .
+    ?sa sbol:location ?loc .
+    ?loc sbol:start ?start .
+    ?loc sbol:end ?end .
+    
+
+    ?cd1 sbol:sequence ?seq .
+    ?seq sbol:elements ?na .
+
+    BIND (xsd:integer(?end) - xsd:integer(?start) + 1 AS ?len)
+    BIND (SUBSTR(?na, xsd:integer(?start), ?len) AS ?nasub)
+
+
+    ?seq2 a sbol:Sequence .
+    ?seq2 sbol:elements ?na2 .
+
+    FILTER(?na2 = ?nasub)
+
+    ?cd2 sbol:sequence ?seq2 .
+
+    FILTER(?cd2 != ?cd1)
+
+    OPTIONAL { ?sa dcterms:title ?annoname . }
+    OPTIONAL { ?cd2 dcterms:title ?cdname . }
+
+} LIMIT 2000
+
+

@@ -1,0 +1,20 @@
+
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?cd1 ?start ?end ?seqlen WHERE {
+
+    ?cd1 a sbol:ComponentDefinition .
+    ?cd1 sbol:sequenceAnnotation ?sa .
+    ?sa sbol:location ?loc .
+    ?loc sbol:start ?start .
+    ?loc sbol:end ?end .
+    
+    ?cd1 sbol:sequence ?seq .
+    ?seq sbol:elements ?na .
+
+    bind(strlen(?na) as ?seqlen)
+
+    filter(xsd:integer(?end) > ?seqlen)
+}
+

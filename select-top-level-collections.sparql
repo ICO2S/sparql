@@ -1,0 +1,11 @@
+
+PREFIX sbol2: <http://sbols.org/v2#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?topLevelCollection ?name WHERE {
+    ?topLevelCollection a sbol2:Collection .
+    FILTER NOT EXISTS { ?anotherCollection sbol2:member ?topLevelCollection }
+    ?topLevelCollection dcterms:title ?name .
+}
+
+

@@ -1,0 +1,13 @@
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+
+SELECT (COUNT(DISTINCT ?sa) as ?count) WHERE {
+
+
+   ?cd1 a sbol:ComponentDefinition .
+   ?cd1 prov:wasDerivedFrom ?wdf1 .
+   ?cd1 sbol:sequenceAnnotation ?sa .
+   ?sa sbol:component ?component .
+} 

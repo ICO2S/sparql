@@ -1,0 +1,14 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX igem: <http://synbiohub.org/igem/>
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+
+SELECT ?cd ?wdf ?id ?name WHERE {
+	?cd a sbol:ComponentDefinition .
+      ?cd prov:wasDerivedFrom ?wdf .
+      ?cd sbol:sequenceAnnotation ?sa .
+      ?sa sbol:role <http://synbiohub.org/igem/feature/BioBrick> .
+      ?sa sbol:displayId ?id .
+      ?sa dcterms:title ?name
+}

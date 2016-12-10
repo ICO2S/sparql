@@ -1,0 +1,22 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX igem: <http://synbiohub.org/igem/>
+PREFIX sbol: <http://sbols.org/v2#>
+
+
+
+
+SELECT DISTINCT ?cd ?wdf WHERE {
+	?cd a sbol:ComponentDefinition .
+        ?cd prov:wasDerivedFrom ?wdf .
+        ?cd sbol:sequenceAnnotation ?sa .
+        ?sa sbol:role ?role .
+        ?cd sbol:sequenceAnnotation ?sa2 .
+        ?sa2 sbol:component ?component .
+        ?sa sbol:location ?loc .
+        ?loc sbol:start ?start .
+        ?loc sbol:end ?end .
+        ?sa2 sbol:location ?loc2 .
+        ?loc2 sbol:start ?start2 .
+        ?loc2 sbol:end ?end2 .
+        FILTER(xsd:integer(?start) >= xsd:integer(?start2) && xsd:integer(?end) <= xsd:integer(?end2))
+}

@@ -1,0 +1,47 @@
+PREFIX sbol: <http://sbols.org/v2#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+
+SELECT (COUNT(DISTINCT ?sa) as ?count) WHERE {
+
+
+   ?cd1 a sbol:ComponentDefinition .
+   ?cd1 prov:wasDerivedFrom ?wdf1 .
+   ?cd1 sbol:sequenceAnnotation ?sa .
+   ?sa sbol:location ?loc .
+   ?sa sbol:role ?role .
+   ?loc sbol:start ?start .
+   ?loc sbol:end ?end .
+
+
+   ?cd1 sbol:sequence ?seq .
+   ?seq sbol:elements ?na .
+
+
+   bind (strlen(?na) as ?seqlen)
+   filter(xsd:integer(?end) <= ?seqlen)
+   filter(xsd:integer(?end) > xsd:integer(?start))
+
+
+   BIND (xsd:integer(?end) - xsd:integer(?start) + 1 AS ?len)
+   filter(?len > 9)
+   BIND (SUBSTR(?na, xsd:integer(?start), ?len) AS ?nasub)
+
+
+   ?seq2 a sbol:Sequence .
+   ?seq2 sbol:elements ?na2 .
+
+
+   FILTER(?na2 = ?nasub)
+
+
+   ?cd2 sbol:sequence ?seq2 .
+   ?cd2 prov:wasDerivedFrom ?wdf2 .
+
+
+   FILTER(?cd2 != ?cd1)
+
+
+   OPTIONAL { ?sa dcterms:title ?annoname . }
+} 

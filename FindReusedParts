@@ -1,0 +1,37 @@
+PREFIX  sbol:  <http://sbols.org/v2#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+
+select ?cd ?ie ?count 
+where
+{
+{
+select  ?cd ?ie (count(?cd) as?count)
+WHERE
+{
+ 
+{
+select ?pcd ?cd ?ie
+where
+{ 
+?cd a sbol:ComponentDefinition ;
+   prov:wasDerivedFrom ?ie .
+ 
+
+
+?pcd a sbol:ComponentDefinition ;
+ sbol:component ?sc.
+
+
+?sc sbol:definition ?cd.
+}
+group by ?pcd ?cd ?ie
+}
+}
+group by ?cd ?ie
+}
+
+
+FILTER (?count>50)
+}
+order by desc (?count)

@@ -1,0 +1,10 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX igem: <http://synbiohub.org/igem/>
+PREFIX sbol: <http://sbols.org/v2#>
+
+SELECT ?cd ?wdf ?sa ?role WHERE {
+  ?cd sbol:sequenceAnnotation ?sa .
+  ?cd prov:wasDerivedFrom ?wdf .
+  ?sa sbol:role ?role .
+  FILTER(regex(str(?role), "http://synbiohub.org/igem/feature/s_mutation" ) )
+}

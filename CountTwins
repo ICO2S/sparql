@@ -1,9 +1,11 @@
 PREFIX sbol: <http://sbols.org/v2#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
 
-SELECT ?cd1 ?cd2 WHERE {
+SELECT ?cd1 ?wdf1 (count(?cd2) as ?count) WHERE {
 
 
 	?cd1 a sbol:ComponentDefinition .
+        ?cd1 prov:wasDerivedFrom ?wdf1 .
 	?cd2 a sbol:ComponentDefinition .
 
 
@@ -14,7 +16,12 @@ SELECT ?cd1 ?cd2 WHERE {
 	?seq1 sbol:elements ?na1 .
 	?seq2 sbol:elements ?na2 .
 
-
+        bind (strlen(?na1) as ?seqlen)
+        filter(?seqlen>0)
 	FILTER(?cd1 != ?cd2)
 	FILTER(?na1 = ?na2)
+
 }
+order by desc (?count)
+
+

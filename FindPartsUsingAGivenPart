@@ -1,0 +1,14 @@
+PREFIX  sbol:  <http://sbols.org/v2#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+select  ?pcd ?ie 
+WHERE
+{
+  
+?pcd a sbol:ComponentDefinition ;
+  sbol:component ?sc;
+  prov:wasDerivedFrom ?ie .
+
+
+?sc sbol:definition <http://synbiohub.org/igem/BBa_I714030/1>.
+}
